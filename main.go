@@ -62,7 +62,7 @@ func (c *Controller) syncToStdout(key string) error {
 
 	if !exists {
 		// Below we will warm up our cache with a Pod, so that we will see a delete for one pod
-		fmt.Printf("Pod %s does not exist anymore\n", key)
+		fmt.Printf("Endpoints %s does not exist anymore\n", key)
 	} else {
 		// Note that you also have to check the uid if you have a local controlled resource, which
 		// is dependent on the actual instance, to detect that a Pod was recreated with the same name
@@ -183,9 +183,9 @@ func main() {
 	// Let's suppose that we knew about a pod "mypod" on our last run, therefore add it to the cache.
 	// If this pod is not there anymore, the controller will be notified about the removal after the
 	// cache has synchronized.
-	indexer.Add(&v1.Pod{
+	indexer.Add(&v1.Endpoints{
 		ObjectMeta: meta_v1.ObjectMeta{
-			Name:      "mypod",
+			Name:      "if-we-had-state-from-earlier-instances-we-could-possibly-detect-deletes-better",
 			Namespace: v1.NamespaceDefault,
 		},
 	})
