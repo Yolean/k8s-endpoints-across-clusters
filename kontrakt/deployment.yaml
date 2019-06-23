@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-endpoints-across-clusters
+  labels: &labels
+    app: k8s-endpoints-across-clusters
+spec:
+  replicas: 2
+  selector:
+    matchLabels: *labels
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      containers:
+      - name: controller
+        image: builds.registry.svc.cluster.local/yolean/k8s-endpoints-across-clusters
+        ports:
+        - containerPort: 8080

@@ -1,0 +1,8 @@
+apiVersion: skaffold/v1beta11
+kind: Config
+build:
+  artifacts:
+  - image: builds.registry.svc.cluster.local/yolean/k8s-endpoints-across-clusters
+deploy:
+  kustomize:
+    path: ./kontrakt
