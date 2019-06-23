@@ -66,7 +66,7 @@ func (c *Controller) syncToStdout(key string) error {
 	} else {
 		// Note that you also have to check the uid if you have a local controlled resource, which
 		// is dependent on the actual instance, to detect that a Pod was recreated with the same name
-		fmt.Printf("Sync/Add/Update for Pod %s\n", obj.(*v1.Pod).GetName())
+		fmt.Printf("Sync/Add/Update for Endpoints %s\n", obj.(*v1.Endpoints).GetName())
 	}
 	return nil
 }
@@ -145,8 +145,7 @@ func main() {
 		klog.Fatal(err)
 	}
 
-	// create the pod watcher
-	podListWatcher := cache.NewListWatchFromClient(clientset.CoreV1().RESTClient(), "pods", v1.NamespaceDefault, fields.Everything())
+	endpointsWatcher := cache.NewListWatchFromClient(clientset.CoreV1().RESTClient(), "endpoints", v1.NamespaceDefault, fields.Everything())
 
 	// create the workqueue
 	queue := workqueue.NewRateLimitingQueue(workqueue.DefaultControllerRateLimiter())
@@ -155,7 +154,7 @@ func main() {
 	// whenever the cache is updated, the pod key is added to the workqueue.
 	// Note that when we finally process the item from the workqueue, we might see a newer version
 	// of the Pod than the version which was responsible for triggering the update.
-	indexer, informer := cache.NewIndexerInformer(podListWatcher, &v1.Pod{}, 0, cache.ResourceEventHandlerFuncs{
+	indexer, informer := cache.NewIndexerInformer(endpointsWatcher, &v1.Endpoints{}, 0, cache.ResourceEventHandlerFuncs{
 		AddFunc: func(obj interface{}) {
 			key, err := cache.MetaNamespaceKeyFunc(obj)
 			if err == nil {
