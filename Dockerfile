@@ -20,3 +20,5 @@ FROM scratch
 COPY --from=0 /src/k8s-endpoints-across-clusters /usr/local/bin/k8s-endpoints-across-clusters
 
 ENTRYPOINT ["k8s-endpoints-across-clusters"]
+
+VOLUME [ "/tmp" ]
