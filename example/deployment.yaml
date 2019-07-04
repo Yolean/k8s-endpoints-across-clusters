@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-endpoints-across-clusters
+  labels:
+    app: k8s-endpoints-across-clusters
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: k8s-endpoints-across-clusters
+  template:
+    metadata:
+      labels:
+        app: k8s-endpoints-across-clusters
+    spec:
+      containers:
+      - name: k8s-endpoints-across-clusters
+        image: builds.registry.svc.cluster.local/yolean/k8s-endpoints-across-clusters
+        volumeMounts:
+        - name: kubeconfigs
+          mountPath: /etc/kubeconfigs
+      volumes:
+      - name: kubeconfigs
+        configMap:
+          name: k8s-sync-kubeconfigs

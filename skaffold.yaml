@@ -1,8 +1,14 @@
-apiVersion: skaffold/v1beta11
+apiVersion: skaffold/v1beta12
 kind: Config
 build:
   artifacts:
   - image: builds.registry.svc.cluster.local/yolean/k8s-endpoints-across-clusters
+    context: ./
+    custom:
+      buildCommand: ../y-stack/ystack-build.sh
+      dependencies:
+        dockerfile:
+          path: ./Dockerfile
 deploy:
   kustomize:
-    path: ./kontrakt
+    path: ./example

@@ -1,0 +1,12 @@
+resources:
+- deployment.yaml
+# A sample service to sync: the Node IP of all nodes in the cluster
+- ./node-ip/service-headless.yaml
+- ./node-ip/daemonset.yaml
+configMapGenerator:
+- name: k8s-sync-kubeconfigs
+  files:
+  # for example: (multipass exec ystack -- /snap/bin/microk8s.config) > kubeconfigs/cluster1
+  - kubeconfigs/cluster1
+  # for example: VM_NAME=ystack2 [y-stack]/microk8s-multipass.sh; (multipass exec ystack2 -- /snap/bin/microk8s.config) > kubeconfigs/cluster2
+  - kubeconfigs/cluster2
